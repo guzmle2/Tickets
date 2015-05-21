@@ -43,7 +43,7 @@ class Usuario{
     }
 
     /**
-     * metodo que guarda el usuario o lo actualiza segun sea el caso
+     * metodo que guarda el vistas_usuario o lo actualiza segun sea el caso
      */
     public function guardar(){
         $conexion = new Conexion();
@@ -142,10 +142,10 @@ class Usuario{
         }
     }
 
+
     /**
-     * metodo para ubicar por id
-     * @param $id parametro de busqueda
-     * @return bool|Usuario si agrego
+     * @param $co
+     * @return bool|Usuario
      */
     public static function buscarPorCorreo($co){
         $conexion = new Conexion();
@@ -158,13 +158,12 @@ class Usuario{
                                                 gerencia,
                                                 clave,
                                                 tipo
-                                                FROM ' . self::TABLA . ' WHERE correo = :correo');
-        $consulta->bindParam(':correo', $co);
+                                                FROM ' . self::TABLA . ' WHERE correo = :email');
+        $consulta->bindParam(':email', $co);
         $consulta->execute();
         $registro = $consulta->fetch();
         if($registro){
             return new self(
-                $registro['id'],
                 $registro['nombre'],
                 $registro['apellido'],
                 $registro['cedula'],
@@ -173,7 +172,8 @@ class Usuario{
                 $registro['gerencia'],
                 $registro['clave'],
                 $registro['tipo'],
-                $co);
+                $co,
+                $registro['id']);
         }else{
             return false;
         }

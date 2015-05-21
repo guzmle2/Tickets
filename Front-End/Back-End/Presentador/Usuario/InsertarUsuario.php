@@ -6,6 +6,18 @@
  * Time: 10:44 PM
  */
   require_once '../../Comun/Usuario.php';
+$str = $_REQUEST['correo'];
+$usuario = "usuario";
+$admin = "admin";
+$tecnico = "tecnico";
+
+if (strpos($str, $tecnico)) {
+    $tusuario = 'tecnico';
+}elseif(strpos($str, $admin)){
+    $tusuario = 'admin';
+}else{
+    $tusuario = 'usuario';
+}
     $usuario = new Usuario(
         $_POST['nombre'],
         $_POST['apellido'],
@@ -14,7 +26,7 @@
         $_POST['extension'],
         $_POST['gerencia'],
         $_POST['clave'],
-        'usuario',
+        $tusuario,
         $_POST['correo'], null);
     $usuario->guardar();
-    echo $usuario->getNombre() . ' se ha guardado correctamente con el id: ' . $usuario->getId();
+    header("location:../../../index.php?usuarionuevo=si");

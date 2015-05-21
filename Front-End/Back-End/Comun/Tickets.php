@@ -8,6 +8,7 @@
 
 class Tickets extends EntidadBase{
 
+    public $id;
     public $prioridad;
     public $SO;
     public $asunto;
@@ -20,7 +21,8 @@ class Tickets extends EntidadBase{
 
 
 
-    public function __construct($p, $so, $a, $d,$e,$enc,$ed,$usrCr ){
+    public function __construct($p, $so, $a, $d,$e,$enc,$ed,$usrCr, $i ){
+        $this -> setId($i);
         $this -> setPrioridad($p);
         $this -> setSO($so);
         $this -> setAsunto($a);
@@ -41,7 +43,7 @@ class Tickets extends EntidadBase{
             asunto = :asunto,
             detalle = :detalle,
             estado = :estado,
-            id_usrEncargado = :id_usr,
+            id_usrEncargado = :id_usrEncargado,
             estadoDetalle = :estadoDetalle,
             prioridad = :prioridad,
             id_usrCreador = :id_creador,
@@ -94,29 +96,27 @@ class Tickets extends EntidadBase{
      */
     public static function buscarPorId($id){
         $conexion = new Conexion();
-        $consulta = $conexion->prepare('SELECT nombre,
-                                                apellido,
-                                                cedula,
-                                                celular,
-                                                extension,
-                                                gerencia,
-                                                clave,
-                                                tipo,
-                                                correo
+        $consulta = $conexion->prepare('SELECT SO,
+                                                asunto,
+                                                detalle,
+                                                estado,
+                                                id_usrEncargado,
+                                                estadoDetalle,
+                                                prioridad,
+                                                id_usrCreador
                                                 FROM ' . self::TABLA . ' WHERE id = :id');
         $consulta->bindParam(':id', $id);
         $consulta->execute();
         $registro = $consulta->fetch();
         if($registro){
-            return new self($registro['nombre'],
-                $registro['apellido'],
-                $registro['cedula'],
-                $registro['celular'],
-                $registro['extension'],
-                $registro['gerencia'],
-                $registro['clave'],
-                $registro['tipo'],
-                $registro['correo'],
+            return new self($registro['SO'],
+                $registro['asunto'],
+                $registro['detalle'],
+                $registro['estado'],
+                $registro['id_usrEncargado'],
+                $registro['estadoDetalle'],
+                $registro['prioridad'],
+                $registro['id_usrCreador'],
                 $id);
         }else{
             return false;
@@ -128,46 +128,35 @@ class Tickets extends EntidadBase{
      * @param $id parametro de busqueda
      * @return bool|Usuario si agrego
      */
-    public static function buscarPorCorreo($co){
+    public static function buscarPorEstado($co){
         $conexion = new Conexion();
-        $consulta = $conexion->prepare('SELECT id,
-                                                nombre,
-                                                apellido,
-                                                cedula,
-                                                celular,
-                                                extension,
-                                                gerencia,
-                                                clave,
-                                                tipo
-                                                FROM ' . self::TABLA . ' WHERE correo = :correo');
-        $consulta->bindParam(':correo', $co);
+
+        $consulta = $conexion->prepare('SELECT SO,
+                                                asunto,
+                                                detalle,
+                                                estado,
+                                                id_usrEncargado,
+                                                estadoDetalle,
+                                                prioridad,
+                                                id_usrCreador
+                                                FROM ' . self::TABLA . ' WHERE estado = :status ORDER BY 1 ASC ');
+        $consulta->bindParam(':status', $co);
         $consulta->execute();
         $registro = $consulta->fetch();
         if($registro){
             return new self(
-                $registro['id'],
-                $registro['nombre'],
-                $registro['apellido'],
-                $registro['cedula'],
-                $registro['celular'],
-                $registro['extension'],
-                $registro['gerencia'],
-                $registro['clave'],
-                $registro['tipo'],
-                $co);
+                $registro['SO'],
+                $registro['asunto'],
+                $registro['detalle'],
+                $registro['estado'],
+                $registro['id_usrEncargado'],
+                $registro['estadoDetalle'],
+                $registro['prioridad'],
+                $registro['id_usrCreador'],
+                $registro['id']);
         }else{
             return false;
         }
-    }
-
-
-    public static function BuscarPorTipoUsuario($tip){
-        $conexion = new Conexion();
-        $consulta = $conexion->prepare(('SELECT *FROM ' . self::TABLA . ' WHERE tipo = :tipo'));
-        $consulta->bindParam(':tipo', $tip);
-        $consulta->execute();
-        $registros = $consulta->fetchAll();
-        return $registros;
     }
 
 
@@ -313,6 +302,22 @@ class Tickets extends EntidadBase{
     public function setIdCreador($id_creador)
     {
         $this->id_creador = $id_creador;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
 }

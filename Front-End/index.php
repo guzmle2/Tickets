@@ -10,32 +10,10 @@
 </head>
 
 <body>
-
     <header>
         <nav>
             <div class="nav-wrapper cyan lighten-1">
                 <a href="#!" class="brand-logo">Tickets</a>
-                <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-                <ul class="right hide-on-med-and-down">
-                    <li><a href="#">Sass</a>
-                    </li>
-                    <li><a href="#">Components</a>
-                    </li>
-                    <li><a href="#">Javascript</a>
-                    </li>
-                    <li><a href="#">Mobile</a>
-                    </li>
-                </ul>
-                <ul class="side-nav" id="mobile-demo">
-                    <li><a href="#">Sass</a>
-                    </li>
-                    <li><a href="#">Components</a>
-                    </li>
-                    <li><a href="#">Javascript</a>
-                    </li>
-                    <li><a href="#">Inicio</a>
-                    </li>
-                </ul>
             </div>
         </nav>
     </header>
@@ -44,23 +22,45 @@
             <div class="col s3">              
             </div>
             <div class="col s6 offset-s3">
-                <form action="#" method="post" style="padding:20%;">
+                <form action="Back-End/Presentador/Usuario/LogearUsuario.php" method="post" style="padding:20%;" onsubmit="return valida(this)">
                     <div class="row ">
                         <div class="input-field">
-                            <input id="email" type="email" class="validate">
+                            <input id="email" type="email" name="email" class="validate" required>
                             <label for="email">Correo (@email)</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field">
-                            <input id="password" type="password" class="validate">
+                            <input id="password" type="password" name="password" class="validate" required>
                             <label for="password">Clave</label>
                         </div>
                     </div>
-                    <button class="btn waves-effect waves-light cyan lighten-1" type="submit" name="action">Ingresar
+                    <button class="btn waves-effect waves-light cyan lighten-1" type="submit" name="action" >Ingresar
                         <i class="mdi-content-send right"></i>
                     </button>
                 </form>
+                <div style="color: red;">
+                    <?php
+                    if (isset($_GET["errorusuario"]))
+                    {
+                        if ($_GET["errorusuario"]=="si")
+                        {
+                            echo '*Clave incorrecta*';
+                        }
+                    }
+                    ?>
+                    <div style="color: blue;">
+                        <?php
+                        if (isset($_GET["usuarionuevo"]))
+                        {
+                            if ($_GET["usuarionuevo"]=="si")
+                            {
+                                echo '*Ingrese con su nueva clave*';
+                            }
+                        }
+                        ?>
+                </div>
+
             </div>
             <div class="col s3"></div>
         </div>
