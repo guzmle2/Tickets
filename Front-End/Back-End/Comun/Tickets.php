@@ -5,8 +5,8 @@
  * Date: 14/05/2015
  * Time: 09:09 PM
  */
-
-class Tickets extends EntidadBase{
+require_once 'Conexion.php';
+class Tickets{
 
     public $id;
     public $prioridad;
@@ -21,17 +21,16 @@ class Tickets extends EntidadBase{
 
 
 
-    public function __construct($p, $so, $a, $d,$e,$enc,$ed,$usrCr, $i ){
+    public function __construct($p, $os, $a, $d,$e,$enc,$ed,$usrCr, $i ){
         $this -> setId($i);
         $this -> setPrioridad($p);
-        $this -> setSO($so);
+        $this -> setSO($os);
         $this -> setAsunto($a);
         $this -> setDetalle($d);
         $this -> setEstado($e);
-        $this -> setEncargado($enc);
+        $this -> setIdEncargado($enc);
         $this -> setEstadoDetalle($ed);
         $this -> setIdCreador($usrCr);
-
     }
 
 
@@ -48,18 +47,18 @@ class Tickets extends EntidadBase{
             prioridad = :prioridad,
             id_usrCreador = :id_creador,
              WHERE id = :id');
-            $consulta->bindParam(':SO', $this->getSistemaOperativo());
+            $consulta->bindParam(':SO', $this->getSO());
             $consulta->bindParam(':asunto', $this->getAsunto());
             $consulta->bindParam(':detalle', $this->getDetalle());
             $consulta->bindParam(':estado', $this->getEstado());
-            $consulta->bindParam(':id_usrEncargado', $this->getEncargado());
+            $consulta->bindParam(':id_usrEncargado', $this->getIdEncargado());
             $consulta->bindParam(':estadoDetalle', $this->getEstadoDetalle());
             $consulta->bindParam(':prioridad', $this->getPrioridad());
             $consulta->bindParam(':id_creador', $this->getIdCreador());
             $consulta->execute();
         }else /*Inserta*/ {
             $consulta = $conexion->prepare('INSERT INTO ' . self::TABLA .'
-             ( SO,
+             (SO,
             asunto,
             detalle,
             estado,
@@ -69,20 +68,21 @@ class Tickets extends EntidadBase{
             id_usrCreador)
              VALUES
              (:SO,
-              :asunto,
-              :detalle,
-              :id_usrEncargado,
-              :estadoDetalle,
-              :prioridad,
-              :id_usrCreador');
-            $consulta->bindParam(':SO', $this->getSistemaOperativo());
+            :asunto,
+            :detalle,
+            :estado,
+            :id_usrEncargado,
+            :estadoDetalle,
+            :prioridad,
+            :id_usrCreador)');
+            $consulta->bindParam(':SO', $this->getSO());
             $consulta->bindParam(':asunto', $this->getAsunto());
             $consulta->bindParam(':detalle', $this->getDetalle());
             $consulta->bindParam(':estado', $this->getEstado());
-            $consulta->bindParam(':id_usrEncargado', $this->getEncargado());
+            $consulta->bindParam(':id_usrEncargado', $this->getIdEncargado());
             $consulta->bindParam(':estadoDetalle', $this->getEstadoDetalle());
             $consulta->bindParam(':prioridad', $this->getPrioridad());
-            $consulta->bindParam(':id_creador', $this->getIdCreador());
+            $consulta->bindParam(':id_usrCreador', $this->getIdCreador());
             $consulta->execute();
             $this->id = $conexion->lastInsertId();
         }
@@ -159,6 +159,15 @@ class Tickets extends EntidadBase{
         }
     }
 
+    public static function buscarPorIdCreador($idn){
+        $conexion = new Conexion();
+        $consulta = $conexion->prepare('SELECT * FROM ' . self::TABLA . ' WHERE id_usrCreador = :id_usrCreador ORDER BY 1 ASC ');
+        $consulta->bindParam(':id_usrCreador', $idn);
+        $consulta->execute();
+        $registros = $consulta->fetchAll();
+        return $registros;
+    }
+
 
     /**
      * @return mixed
@@ -174,22 +183,6 @@ class Tickets extends EntidadBase{
     public function setPrioridad($prioridad)
     {
         $this->prioridad = $prioridad;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSistemaOperativo()
-    {
-        return $this->sistemaOperativo;
-    }
-
-    /**
-     * @param mixed $sistemaOperativo
-     */
-    public function setSistemaOperativo($sistemaOperativo)
-    {
-        $this->sistemaOperativo = $sistemaOperativo;
     }
 
     /**
@@ -238,22 +231,6 @@ class Tickets extends EntidadBase{
     public function setEstado($estado)
     {
         $this->estado = $estado;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEncargado()
-    {
-        return $this->encargado;
-    }
-
-    /**
-     * @param mixed $encargado
-     */
-    public function setEncargado($encargado)
-    {
-        $this->encargado = $encargado;
     }
 
     /**
@@ -318,6 +295,22 @@ class Tickets extends EntidadBase{
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdEncargado()
+    {
+        return $this->id_encargado;
+    }
+
+    /**
+     * @param mixed $id_encargado
+     */
+    public function setIdEncargado($id_encargado)
+    {
+        $this->id_encargado = $id_encargado;
     }
 
 }

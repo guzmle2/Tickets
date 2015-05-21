@@ -22,10 +22,10 @@
             <div class="col s3">              
             </div>
             <div class="col s6 offset-s3">
-                <form action="Back-End/Presentador/Usuario/LogearUsuario.php" method="post" style="padding:20%;" onsubmit="return valida(this)">
+                <form action="Back-End/Presentador/Usuario/indexPresentador.php" method="post" style="padding:20%;" onsubmit="return valida(this)">
                     <div class="row ">
                         <div class="input-field">
-                            <input id="email" type="email" name="email" class="validate" required>
+                            <input  id="email" type="email" name="email" class="validate" required>
                             <label for="email">Correo (@email)</label>
                         </div>
                     </div>

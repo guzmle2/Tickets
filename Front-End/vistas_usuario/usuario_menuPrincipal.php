@@ -10,7 +10,19 @@
 </head>
 
 <body>
+<script type="text/javascript">
+    function mostrar(){
+        if(document.getElementById('oculto').style.display == 'block')
+        {
+            document.getElementById('oculto').style.display = 'none';
+            document.getElementById('textCambia').innerHTML = "Generar ticket <i class='mdi-alert-warning right'></i>";
 
+        }else{
+            (document.getElementById('oculto').style.display = 'block');
+            document.getElementById('textCambia').innerHTML = "Ocutar <i class='mdi-alert-warning right'></i>";
+        }
+    }
+</script>
     <header>
         <ul id="dropdownUsuario" class="dropdown-content">
             <li><a href="UsuarioEditar.php">Editar Info</a>
@@ -74,13 +86,68 @@
                         </li>
                     </ul>
                 </div>
-                <button class="btn waves-effect waves-light cyan lighten-1" type="submit" name="action">Generar ticket
+                <button class="btn waves-effect waves-light cyan lighten-1" onclick="mostrar()" id="textCambia" name="action" >Generar ticket
                     <i class="mdi-alert-warning right"></i>
                 </button>
+                <br/>
+                <br/>
+                <form action="../Back-End/Presentador/Tikeras/CrearTicketsPresentador.php" method="post" id='oculto' style='display:none;'>
+                    <div class="row">
+                        <label>Prioridad</label>
+                        <select class="browser-default" name="prioridad" required>
+                            <option value="" disabled selected>Escoga la prioridad</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <label>Sistema Operativo</label>
+                        <select class="browser-default" name="SO" required>
+                            <option value="" disabled selected>Escoga Sistema Operativo</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                    </div>
+
+
+                    <div class="row ">
+                        <div class="input-field">
+                            <input id="asunto" type="text" class="validate" length="10" name="asunto" required>
+                            <label for="asunto">Asunto</label>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="input-field col s12">
+                            <textarea id="detalle" class="materialize-textarea" length="120" name="detalle" required></textarea>
+                            <label for="detalle">Detalle</label>
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light cyan lighten-1" type="submit" name="action">Generar
+                        <i class="mdi-alert-warning right"></i>
+                    </button>
+                </form>
+
+                <div style="color: blue;">
+                    <?php
+                    if (isset($_GET["TicketGenerado"]))
+                    {
+                        if ($_GET["TicketGenerado"]=="si")
+                        {
+                            echo '*Su ticket fue generado con exito*';
+                        }else{
+                            echo '*Error en generar ticket intente mas tarde*';
+                        }
+                    }
+                    ?>
+                </div>
             </div>
             <div class="col s3"></div>
         </div>
     </section>
+
     <footer class="page-footer cyan lighten-1">
         <div class="container">
             <div class="row">

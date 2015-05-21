@@ -35,7 +35,8 @@
                 <form action="Back-End/Presentador/Usuario/InsertarUsuario.php" method="post" style="padding:10%;">
                     <div class="row ">
                         <div class="input-field">
-                            <input id="correo" type="text" class="validate" name="correo" value="<?php echo $_REQUEST['email']; ?> " >
+                            <input disabled  type="text" class="validate" value="<?php echo $_REQUEST['email']; ?> " >
+                            <input id="correo" type="hidden" class="validate" name="correo" value="<?php echo $_REQUEST['email']; ?> " >
                             <label for="correo">Correo institucional</label>
                         </div>
                     </div>

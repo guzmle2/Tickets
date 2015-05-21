@@ -13,6 +13,7 @@ $admin = "admin";
 $tecnico = "tecnico";
 
 $personaje = Usuario::buscarPorCorreo( $_REQUEST['email']);
+
 if($personaje){
     if($personaje->getClave() == $_REQUEST['password'] )
     {
@@ -25,6 +26,8 @@ if($personaje){
         }else{
             header("location:../../../index.php?errorusuario=si");
         }
+        session_start();
+        $_SESSION['id_usuario'] = $personaje->getId();
     }else{
         header("location:../../../index.php?errorusuario=si");
     }

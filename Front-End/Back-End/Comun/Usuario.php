@@ -22,12 +22,6 @@ class Usuario{
     const TABLA = 'usuario';
 
 
-   /* public static function getInstance(){
-        if (!(self::$_instance instanceof self)){
-            self::$_instance=new self();
-        }
-        return self::$_instance;
-    }*/
 
     public function __construct($n, $a, $ced, $cel, $e, $g,$cl,$t,$col, $idn) {
         $this->setId($idn);
