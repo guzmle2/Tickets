@@ -6,8 +6,8 @@
  * Time: 10:51 PM
  */
 
-require_once '../../Comun/Tickets.php';
-require_once '../../Comun/Usuario.php';
+require_once 'EntidadTickets.php';
+require_once 'EntidadUsuario.php';
 session_start();
 $str = $_SESSION['id_usuario'];
 
@@ -18,12 +18,14 @@ $tickets = new Tickets(
     $_POST['detalle'],
     'NUEVO',
     '0',
-    '0',
+    '',
     $str,
     null);
 $tickets->guardar();
 if($tickets->getId() == 0){
-    header("location:../../../vistas_usuario/usuario_menuPrincipal.php?TicketGenerado=no");
+    header("location:../../vistas_usuario/index.php?TicketGenerado=no");
 }else{
-    header("location:../../../vistas_usuario/usuario_menuPrincipal.php?TicketGenerado=si");
+    header("location:../../vistas_usuario/index.php?TicketGenerado=si");
 }
+
+

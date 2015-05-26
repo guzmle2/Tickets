@@ -5,17 +5,19 @@
  * Date: 15/05/2015
  * Time: 10:44 PM
  */
-require_once '../../Comun/Usuario.php';
+require_once 'EntidadUsuario.php';
+session_start();
+$str = $_SESSION['id_usuario'];
 $usuario = new Usuario(
-    //$_POST['nombre'],
-    'Cambio nombre',
+    $_POST['nombre'],
     $_POST['apellido'],
     $_POST['cedula'],
     $_POST['celular'],
     $_POST['extension'],
     $_POST['gerencia'],
     $_POST['clave'],
-    'usuario',
-    $_POST['correo'], 1);
+    $_POST['tipo'],
+    $_POST['correo'],
+    $str);
 $usuario->guardar();
-echo $usuario->getNombre() . ' se ha guardado correctamente con el id: ' . $usuario->getId();
+header("location:../../vistas_usuario/index.php?modificado=si");

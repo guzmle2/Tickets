@@ -1,3 +1,4 @@
+<?php include '../Back-End/Presentador/UsuarioConsultarPresentador.php' ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,41 +33,44 @@
             <div class="col s3">
             </div>
             <div class="col s8 offset-s2">
-                <form action="Back-End/Presentador/Usuario/InsertarUsuario.php" method="post" style="padding:10%;">
+                <form action="../Back-End/Presentador/UsuarioModificarPresentador.php" method="post" style="padding:10%;">
                     <div class="row ">
                         <div class="input-field">
-                            <input id="correo" type="text" class="validate" name="correo">
+                            <input disabled id="correo" type="text" class="validate" name="correo" value="<?php echo $usuario->getCorreo();?>">
                             <label for="correo">Correo institucional</label>
                         </div>
+                        <input id="correo" type="hidden" class="validate" name="correo" value="<?php echo $usuario->getCorreo();?>">
+                        <input id="tipo" type="hidden" class="validate" name="tipo" value="<?php echo $usuario->getTipo();?>">
+
                     </div>
                     <div class="row ">
                         <div class="input-field col s6">
-                            <input id="clave" type="password" class="validate" length="10" name="clave">
+                            <input required id="clave" type="password" class="validate" length="10" name="clave" value="<?php echo $usuario->getClave();?>">
                             <label for="clave">Clave</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="nombre" type="text" class="validate" length="10" name="nombre">
+                            <input required id="nombre" type="text" class="validate" length="10" name="nombre" value="<?php echo $usuario->getNombre();?>">
                             <label for="nombre">Nombre</label>
                         </div>
                     </div>
                     <div class="row ">
                         <div class="input-field col s6">
-                            <input id="apellido" type="text" class="validate" length="10" name="apellido">
+                            <input required id="apellido" type="text" class="validate" length="10" name="apellido" value="<?php echo $usuario->getApellido();?>">
                             <label for="apellido">Apellido</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="cedula" type="text" class="validate" length="10" name="cedula">
+                            <input required id="cedula" type="text" class="validate" length="10" name="cedula" value="<?php echo $usuario->getCedula();?>">
                             <label for="cedula">Cedula</label>
                         </div>
                     </div>
 
                     <div class="row ">
                         <div class="input-field col s6 ">
-                            <input id="celular" type="text" class="validate" length="10" name="celular">
+                            <input required id="celular" type="text" class="validate" length="10" name="celular" value="<?php echo $usuario->getCelular();?>">
                             <label for="celular">Celular</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="extension" type="text" class="validate" length="4" name="extension">
+                            <input required id="extension" type="text" class="validate" length="4" name="extension" value="<?php echo $usuario->getExtension();?>">
                             <label for="extension">Extension</label>
                         </div>
                     </div>
@@ -74,8 +78,7 @@
                     <div class="row">
                         <div class="col s6 offset-s3">
                             <label>Gerencia</label>
-                            <select class="browser-default" name="gerencia">
-                                <option value="" disabled selected>Escoga su gerencia</option>
+                            <select required class="browser-default" name="gerencia" value="<?php echo $usuario->getGerencia();?>">
                                 <option value="1">Option 1</option>
                                 <option value="2">Option 2</option>
                                 <option value="3">Option 3</option>

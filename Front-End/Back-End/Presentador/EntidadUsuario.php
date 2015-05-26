@@ -5,7 +5,7 @@
  * Date: 14/05/2015
  * Time: 09:09 PM
  */
-require_once 'Conexion.php';
+require_once 'EntidadConexion.php';
 class Usuario{
 
     private $id;
@@ -50,8 +50,8 @@ class Usuario{
             extension = :extension,
             gerencia = :gerencia,
             clave = :clave,
-            tipo = :tipo,
             correo = :correo,
+            tipo = :tipo,
              WHERE id = :id');
             $consulta->bindParam(':nombre', $this->getNombre());
             $consulta->bindParam(':apellido', $this->getApellido());
@@ -60,8 +60,8 @@ class Usuario{
             $consulta->bindParam(':extension', $this->getExtension());
             $consulta->bindParam(':gerencia', $this->getGerencia());
             $consulta->bindParam(':clave', $this->getClave());
-            $consulta->bindParam(':tipo', $this->getTipo());
             $consulta->bindParam(':correo', $this->getCorreo());
+            $consulta->bindParam(':tipo', $this->getTipo());
             $consulta->bindParam(':id', $this->id);
             $consulta->execute();
         }else /*Inserta*/ {

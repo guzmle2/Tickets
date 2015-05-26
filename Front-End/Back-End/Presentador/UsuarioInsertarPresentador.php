@@ -5,7 +5,7 @@
  * Date: 15/05/2015
  * Time: 10:44 PM
  */
-  require_once '../../Comun/Usuario.php';
+  require_once 'EntidadUsuario.php';
 $str = $_REQUEST['correo'];
 $usuario = "usuario";
 $admin = "admin";
@@ -29,4 +29,4 @@ if (strpos($str, $tecnico)) {
         $tusuario,
         $_POST['correo'], null);
     $usuario->guardar();
-    header("location:../../../index.php?usuarionuevo=si");
+    header("location:../../index.php?usuarionuevo=si");

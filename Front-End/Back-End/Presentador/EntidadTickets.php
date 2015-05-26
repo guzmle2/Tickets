@@ -5,7 +5,7 @@
  * Date: 14/05/2015
  * Time: 09:09 PM
  */
-require_once 'Conexion.php';
+require_once 'EntidadConexion.php';
 class Tickets{
 
     public $id;
@@ -89,11 +89,7 @@ class Tickets{
         $conexion = null;
     }
 
-    /**
-     * metodo para ubicar por id
-     * @param $id parametro de busqueda
-     * @return bool|Usuario si agrego
-     */
+
     public static function buscarPorId($id){
         $conexion = new Conexion();
         $consulta = $conexion->prepare('SELECT SO,
@@ -123,14 +119,17 @@ class Tickets{
         }
     }
 
-    /**
-     * metodo para ubicar por id
-     * @param $id parametro de busqueda
-     * @return bool|Usuario si agrego
-     */
-    public static function buscarPorEstado($co){
+    public static function obtenerPorEstado($co){
         $conexion = new Conexion();
+        $consulta = $conexion->prepare('SELECT * FROM ' . self::TABLA . ' WHERE estado = :estado ORDER BY 1 ASC ');
+        $consulta->bindParam(':estado', $co);
+        $consulta->execute();
+        $registros = $consulta->fetchAll();
+        return $registros;
+    }
 
+    public static function obtenerPorIdCreador($idn){
+        $conexion = new Conexion();
         $consulta = $conexion->prepare('SELECT SO,
                                                 asunto,
                                                 detalle,
@@ -139,30 +138,35 @@ class Tickets{
                                                 estadoDetalle,
                                                 prioridad,
                                                 id_usrCreador
-                                                FROM ' . self::TABLA . ' WHERE estado = :status ORDER BY 1 ASC ');
-        $consulta->bindParam(':status', $co);
+                                                FROM ' . self::TABLA . ' WHERE id_usrCreador = :id_usrCreador');
+        $consulta->bindParam(':id_usrCreador', $idn);
         $consulta->execute();
-        $registro = $consulta->fetch();
-        if($registro){
-            return new self(
-                $registro['SO'],
-                $registro['asunto'],
-                $registro['detalle'],
-                $registro['estado'],
-                $registro['id_usrEncargado'],
-                $registro['estadoDetalle'],
-                $registro['prioridad'],
-                $registro['id_usrCreador'],
-                $registro['id']);
-        }else{
-            return false;
-        }
+        $registros = $consulta->fetchAll();
+        return $registros;
     }
 
-    public static function buscarPorIdCreador($idn){
+
+    public static function obtenerPorUsuarioEstado($idUsuario, $estatus){
         $conexion = new Conexion();
-        $consulta = $conexion->prepare('SELECT * FROM ' . self::TABLA . ' WHERE id_usrCreador = :id_usrCreador ORDER BY 1 ASC ');
-        $consulta->bindParam(':id_usrCreador', $idn);
+        $consulta = $conexion->prepare('SELECT SO,
+                                                asunto,
+                                                detalle,
+                                                estado,
+                                                id_usrEncargado,
+                                                estadoDetalle,
+                                                prioridad,
+                                                id_usrCreador
+                                                FROM ' . self::TABLA . ' WHERE id_usrCreador = :idUsuario and estado = :estado ORDER BY 1 ASC ');
+        $consulta->bindParam(':id_usrCreador', $idUsuario);
+        $consulta->bindParam(':estado', $estatus);
+        $consulta->execute();
+        $registros = $consulta->fetchAll();
+        return $registros;
+    }
+
+    public static function obtenerTodos(){
+        $conexion = new Conexion();
+        $consulta = $conexion->prepare('SELECT * FROM ' . self::TABLA );
         $consulta->execute();
         $registros = $consulta->fetchAll();
         return $registros;

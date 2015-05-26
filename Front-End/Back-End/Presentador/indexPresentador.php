@@ -6,7 +6,7 @@
  * Time: 06:37 PM
  */
 
-require_once '../../Comun/Usuario.php';
+require_once 'EntidadUsuario.php';
 
 $usuario = "usuario";
 $admin = "admin";
@@ -18,19 +18,19 @@ if($personaje){
     if($personaje->getClave() == $_REQUEST['password'] )
     {
         if($personaje->getTipo() == $usuario){
-            header("location:../../../vistas_usuario/usuario_menuPrincipal.php");
+            header("location:../../vistas_usuario/index.php");
         }elseif($personaje->getTipo() == $admin){
-            header("location:../../../vistas_admin/admin_menuPrincipal.php");
+            header("location:../../vistas_admin/admin_menuPrincipal.php");
         }elseif($personaje->getTipo() == $tecnico){
-            header("location:../../../vistas_tecnico/tecnico_menuPrincipal.php");
+            header("location:../../vistas_tecnico/tecnico_menuPrincipal.php");
         }else{
-            header("location:../../../index.php?errorusuario=si");
+            header("location:../../index.php?errorusuario=si");
         }
         session_start();
         $_SESSION['id_usuario'] = $personaje->getId();
     }else{
-        header("location:../../../index.php?errorusuario=si");
+        header("location:../../index.php?errorusuario=si");
     }
 }else{
-    header("location:../../../UsuarioAgregar.php?email=".$_REQUEST['email']);
+    header("location:../../UsuarioAgregar.php?email=".$_REQUEST['email']);
 }

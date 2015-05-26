@@ -1,3 +1,4 @@
+<?php include '../Back-End/Presentador/TicketConsultarPresentador.php' ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,28 +71,97 @@
                     <ul class="collapsible popout collapsible-accordion" data-collapsible="accordion">
                         <li class="">
                             <div class="collapsible-header"><i class="mdi-alert-warning"></i>Incidencias Abiertas</div>
-                            <div class="collapsible-body" style="display: none;">
-                                <p>
-                                    Incidencias abiertas
-                                </p>
+                            <div class="collapsible-body" style="display: none;padding: 2%;">
+                                <table class="striped">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="asunto">Asunto</th>
+                                        <th data-field="prioridad">Prioridad</th>
+                                        <th data-field="detalle">Detalle</th>
+                                        <th data-field="estado">Estatus</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php foreach($personajes as $item): ?>
+                                            <?php
+                                            if($item['estado']!='CERRADO'){?>
+                                                <tr>
+                                                    <td>
+                                                        <?php echo $item['asunto'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $item['prioridad'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $item['detalle'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $item['estado'] ?>
+                                                    </td>
+                                                </tr>
+
+                                            <?php   }   ?>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </li>
                         <li class="">
                             <div class="collapsible-header"><i class="mdi-action-visibility"></i>Incidencias cerradas</div>
-                            <div class="collapsible-body" style="display: none;">
-                                <p>
-                                    Incidencias cerradas.
-                                </p>
+                            <div class="collapsible-body" style="display: none; padding: 2%;">
+                                <table class="striped">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="asunto">Asunto</th>
+                                        <th data-field="estado">Estatus</th>
+                                        <th data-field="estado">Comentario</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <?php foreach($personajes as $items): ?>
+                                        <?php
+                                        if($items['estado']=='CERRADO'){?>
+
+                                                <tr>
+                                                    <td>
+                                                        <?php echo $items['asunto'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $items['estado'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $items['estadoDetalle'] ?>
+                                                </td>
+                                                </tr>
+
+                                        <?php   }
+                                        ?>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </li>
                     </ul>
                 </div>
+                <?php
+                if (isset($_GET["modificado"]))
+                {
+                    if ($_GET["modificado"]=="si")
+                    {
+                        echo '*Sus datos fueron modificados exitosamente*';
+                    }else{
+                        echo '*Error al actualizar sus datos intente mas tarde*';
+                    }
+                }
+                ?>
                 <button class="btn waves-effect waves-light cyan lighten-1" onclick="mostrar()" id="textCambia" name="action" >Generar ticket
                     <i class="mdi-alert-warning right"></i>
                 </button>
                 <br/>
                 <br/>
-                <form action="../Back-End/Presentador/Tikeras/CrearTicketsPresentador.php" method="post" id='oculto' style='display:none;'>
+                <form action="../Back-End/Presentador/TicketsCrearPresentador.php" method="post" id='oculto' style='display:none;'>
                     <div class="row">
                         <label>Prioridad</label>
                         <select class="browser-default" name="prioridad" required>
