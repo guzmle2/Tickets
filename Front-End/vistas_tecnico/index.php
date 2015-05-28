@@ -207,44 +207,6 @@ require_once '../Back-End/Presentador/EntidadUsuario.php';
                 </button>
                 <br/>
                 <br/>
-                <form action="../Back-End/Presentador/TicketsCrearPresentador.php" method="post" id='oculto' style='display:none;'>
-                    <div class="row">
-                        <label>Prioridad</label>
-                        <select class="browser-default" name="prioridad" required>
-                            <option value="" disabled selected>Escoga la prioridad</option>
-                            <option value="BAJA">BAJA</option>
-                            <option value="MODERADA">MODERADA</option>
-                            <option value="ALTA">ALTA</option>
-                        </select>
-                    </div>
-
-                    <div class="row">
-                        <label>Sistema Operativo</label>
-                        <select class="browser-default" name="SO" required>
-                            <option value="" disabled selected>Escoga Sistema Operativo</option>
-                            <option value="Linux">Linux</option>
-                            <option value="Window">Window</option>
-                            <option value="iOS">iOS</option>
-                        </select>
-                    </div>
-
-
-                    <div class="row ">
-                        <div class="input-field">
-                            <input id="asunto" type="text" class="validate" length="10" name="asunto" required>
-                            <label for="asunto">Asunto</label>
-                        </div>
-                    </div>
-                    <div class="row ">
-                        <div class="input-field col s12">
-                            <textarea id="detalle" class="materialize-textarea" length="120" name="detalle" required></textarea>
-                            <label for="detalle">Detalle</label>
-                        </div>
-                    </div>
-                    <button class="btn waves-effect waves-light cyan lighten-1" type="submit" name="action">Generar
-                        <i class="mdi-alert-warning right"></i>
-                    </button>
-                </form>
             </div>
         </div>
     </section>
