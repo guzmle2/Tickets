@@ -51,7 +51,7 @@ class Usuario{
             gerencia = :gerencia,
             clave = :clave,
             correo = :correo,
-            tipo = :tipo,
+            tipo = :tipo
              WHERE id = :id');
             $consulta->bindParam(':nombre', $this->getNombre());
             $consulta->bindParam(':apellido', $this->getApellido());
@@ -174,14 +174,25 @@ class Usuario{
     }
 
 
-    public static function BuscarPorTipoUsuario($tip){
+    public static function buscarPorTipoUsuario($tip){
         $conexion = new Conexion();
-        $consulta = $conexion->prepare(('SELECT *FROM ' . self::TABLA . ' WHERE tipo = :tipo'));
+        $consulta = $conexion->prepare(('SELECT id,
+                                                nombre,
+                                                apellido,
+                                                cedula,
+                                                celular,
+                                                extension,
+                                                gerencia,
+                                                clave,
+                                                tipo,
+                                                correo
+                                                FROM ' . self::TABLA . ' WHERE tipo = :tipo'));
         $consulta->bindParam(':tipo', $tip);
         $consulta->execute();
         $registros = $consulta->fetchAll();
         return $registros;
     }
+
 
 
 

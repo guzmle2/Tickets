@@ -20,9 +20,9 @@ if($personaje){
         if($personaje->getTipo() == $usuario){
             header("location:../../vistas_usuario/index.php");
         }elseif($personaje->getTipo() == $admin){
-            header("location:../../vistas_admin/admin_menuPrincipal.php");
+            header("location:../../vistas_admin/index.php");
         }elseif($personaje->getTipo() == $tecnico){
-            header("location:../../vistas_tecnico/tecnico_menuPrincipal.php");
+            header("location:../../vistas_tecnico/index.php");
         }else{
             header("location:../../index.php?errorusuario=si");
         }

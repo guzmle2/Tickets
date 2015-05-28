@@ -7,5 +7,8 @@
  */
 
 include 'EntidadTickets.php';
+include 'EntidadUsuario.php';
 session_start();
-$str = $_SESSION['id_usuario'];$personajes = Tickets::obtenerPorIdCreador($str);
+$str = $_SESSION['id_usuario'];
+$TecnicoTickets = Tickets::obtenerPorIdEncargado($str);
+

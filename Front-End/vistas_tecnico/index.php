@@ -1,4 +1,8 @@
-<?php include '../Back-End/Presentador/TicketConsultarPresentador.php' ?>
+<?php
+include '../Back-End/Presentador/TicketConsultarTecnicoPresentador.php';
+require_once '../Back-End/Presentador/EntidadUsuario.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,8 +34,6 @@
             </li>
         </ul>
         <ul id="dropdownTickets" class="dropdown-content">
-            <li><a href="#!">Crear</a>
-            </li>
             <li><a href="#!">Consultar</a>
             </li>
         </ul>
@@ -62,33 +64,41 @@
     </header>
     <section class="container section">
         <div class="row">
-            <div class="col s8 offset-s2">
+            <div class="col s12 ">
                 <div id="popout" class="section scrollspy">
-                    <h4>Consultor de incidencias</h4>
-                    <p class="caption">Estatus de sus incidencias. </p>
+                    <h4>Administrador de incidencias</h4>
+                    <p class="caption">Estatus de incidencias. </p>
                     <ul class="collapsible popout collapsible-accordion" data-collapsible="accordion">
                         <li class="">
-                            <div class="collapsible-header"><i class="mdi-alert-warning"></i>Incidencias Abiertas</div>
+                            <div class="collapsible-header"><i class="mdi-alert-warning"></i>Incidencias que resolver</div>
                             <div class="collapsible-body" style="display: none;padding: 2%;">
                                 <table class="striped">
                                     <thead>
                                     <tr>
-                                        <th data-field="asunto">Num</th>
+                                        <th data-field="asunto">Id</th>
+                                        <th data-field="asunto">Usuario</th>
                                         <th data-field="asunto">Asunto</th>
                                         <th data-field="prioridad">Prioridad</th>
                                         <th data-field="detalle">Detalle</th>
                                         <th data-field="estado">Estatus</th>
+                                        <th data-field="comentario">DetalleTecnico</th>
+                                        <th data-field="sybm"></th>
                                     </tr>
                                     </thead>
 
                                     <tbody>
-                                        <?php foreach($personajes as $item): ?>
+                                        <?php foreach($TecnicoTickets as $item): ?>
                                             <?php
-                                            if($item['estado']!='CERRADO'){?>
+                                            if($item['estado']!='NUEVO'){?>
                                                 <tr>
+
                                                     <td>
                                                         <?php echo $item['id'] ?>
-
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                        $usuario = Usuario::buscarPorId($item['id_usrCreador']);
+                                                        echo $usuario->getCorreo(); ?>
                                                     </td>
                                                     <td>
                                                         <?php echo $item['asunto'] ?>
@@ -99,71 +109,99 @@
                                                     <td>
                                                         <?php echo $item['detalle'] ?>
                                                     </td>
-                                                    <td>
-                                                        <?php echo $item['estado'] ?>
-                                                    </td>
+                                                    <form action="../Back-End/Presentador/TicketTecnicoPresentador.php" method="post">
+                                                        <td>
+                                                            <select class="browser-default" name="estatus" required>
+                                                                <option value="" disabled selected>Seleccione estatus</option>
+                                                                <option value="PENDIENTE">PENDIENTE</option>
+                                                                <option value="CERRADO">CERRADO</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <textarea id="detalleEstado" class="materialize-textarea" length="120" name="detalleEstado" required></textarea>
+                                                        </td>
+                                                        <td>
+                                                            <input id="id_tickets" type="hidden" class="validate" name="id_tickets" value="<?php echo $item['id'];?>">
+                                                            <button class="btn waves-effect waves-light cyan lighten-1" type="submit" name="action">Guardar
+                                                            </button>
+                                                        </td>
+                                                    </form>
                                                 </tr>
 
-                                            <?php   }   ?>
-                                        <?php endforeach; ?>
+                                            <?php   }   endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
                         </li>
+
+
                         <li class="">
-                            <div class="collapsible-header"><i class="mdi-action-visibility"></i>Incidencias cerradas</div>
-                            <div class="collapsible-body" style="display: none; padding: 2%;">
+                            <div class="collapsible-header"><i class="mdi-alert-warning"></i>Incidencias en pendiente</div>
+                            <div class="collapsible-body" style="display: none;padding: 2%;">
                                 <table class="striped">
                                     <thead>
                                     <tr>
-                                        <th data-field="asunto">Num</th>
+                                        <th data-field="asunto">Id</th>
+                                        <th data-field="asunto">Usuario</th>
                                         <th data-field="asunto">Asunto</th>
+                                        <th data-field="prioridad">Prioridad</th>
+                                        <th data-field="detalle">Detalle</th>
                                         <th data-field="estado">Estatus</th>
-                                        <th data-field="estado">Comentario</th>
+                                        <th data-field="comentario">DetalleTecnico</th>
+                                        <th data-field="sybm"></th>
                                     </tr>
                                     </thead>
 
                                     <tbody>
-                                    <?php foreach($personajes as $items): ?>
+                                    <?php foreach($TecnicoTickets as $item): ?>
                                         <?php
-                                        if($items['estado']=='CERRADO'){?>
+                                        if($item['estado']=='PENDIENTE'){?>
+                                            <tr>
 
-                                                <tr>
-
+                                                <td>
+                                                    <?php echo $item['id'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    $usuario = Usuario::buscarPorId($item['id_usrCreador']);
+                                                    echo $usuario->getCorreo(); ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $item['asunto'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $item['prioridad'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $item['detalle'] ?>
+                                                </td>
+                                                <form action="../Back-End/Presentador/TicketTecnicoPresentador.php" method="post">
                                                     <td>
-                                                        <?php echo $items['id'] ?>
+                                                        <select class="browser-default" name="estatus" required>
+                                                            <option value="PENDIENTE">PENDIENTE</option>
+                                                            <option value="CERRADO">CERRADO</option>
+                                                        </select>
                                                     </td>
                                                     <td>
-                                                        <?php echo $items['asunto'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $items['estado'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $items['estadoDetalle'] ?>
-                                                </td>
-                                                </tr>
+                                                        <textarea id="detalleEstado" class="materialize-textarea" length="120" name="detalleEstado"  required><?php echo $item['estadoDetalle'] ?></textarea>
+                                                    </td>
+                                                    <td>
+                                                        <input id="id_tickets" type="hidden" class="validate" name="id_tickets" value="<?php echo $item['id'];?>">
+                                                        <button class="btn waves-effect waves-light cyan lighten-1" type="submit" name="action">Guardar
+                                                        </button>
+                                                    </td>
+                                                </form>
+                                            </tr>
 
-                                        <?php   }
-                                        ?>
-                                    <?php endforeach; ?>
+                                        <?php   }   endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
                         </li>
+
+
                     </ul>
                 </div>
-                <?php
-                if (isset($_GET["modificado"]))
-                {
-                    if ($_GET["modificado"]=="si")
-                    {
-                        echo '*Sus datos fueron modificados exitosamente*';
-                    }else{
-                        echo '*Error al actualizar sus datos intente mas tarde*';
-                    }
-                }
-                ?>
                 <button class="btn waves-effect waves-light cyan lighten-1" onclick="mostrar()" id="textCambia" name="action" >Generar ticket
                     <i class="mdi-alert-warning right"></i>
                 </button>
@@ -207,20 +245,6 @@
                         <i class="mdi-alert-warning right"></i>
                     </button>
                 </form>
-
-                <div style="color: blue;">
-                    <?php
-                    if (isset($_GET["TicketGenerado"]))
-                    {
-                        if ($_GET["TicketGenerado"]=="si")
-                        {
-                            echo '*Su ticket fue generado con exito*';
-                        }else{
-                            echo '*Error en generar ticket intente mas tarde*';
-                        }
-                    }
-                    ?>
-                </div>
             </div>
         </div>
     </section>

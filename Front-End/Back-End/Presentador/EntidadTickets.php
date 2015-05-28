@@ -21,8 +21,7 @@ class Tickets{
 
 
 
-    public function __construct($p, $os, $a, $d,$e,$enc,$ed,$usrCr, $i ){
-        $this -> setId($i);
+    public function __construct($p, $os, $a, $d,$e,$enc,$ed,$usrCr, $i ){        
         $this -> setPrioridad($p);
         $this -> setSO($os);
         $this -> setAsunto($a);
@@ -31,6 +30,7 @@ class Tickets{
         $this -> setIdEncargado($enc);
         $this -> setEstadoDetalle($ed);
         $this -> setIdCreador($usrCr);
+        $this -> setId($i);
     }
 
 
@@ -45,7 +45,7 @@ class Tickets{
             id_usrEncargado = :id_usrEncargado,
             estadoDetalle = :estadoDetalle,
             prioridad = :prioridad,
-            id_usrCreador = :id_creador,
+            id_usrCreador = :id_creador
              WHERE id = :id');
             $consulta->bindParam(':SO', $this->getSO());
             $consulta->bindParam(':asunto', $this->getAsunto());
@@ -55,6 +55,7 @@ class Tickets{
             $consulta->bindParam(':estadoDetalle', $this->getEstadoDetalle());
             $consulta->bindParam(':prioridad', $this->getPrioridad());
             $consulta->bindParam(':id_creador', $this->getIdCreador());
+            $consulta->bindParam(':id', $this->getId());
             $consulta->execute();
         }else /*Inserta*/ {
             $consulta = $conexion->prepare('INSERT INTO ' . self::TABLA .'
@@ -130,7 +131,7 @@ class Tickets{
 
     public static function obtenerPorIdCreador($idn){
         $conexion = new Conexion();
-        $consulta = $conexion->prepare('SELECT SO,
+        $consulta = $conexion->prepare('SELECT id,SO,
                                                 asunto,
                                                 detalle,
                                                 estado,
@@ -140,6 +141,24 @@ class Tickets{
                                                 id_usrCreador
                                                 FROM ' . self::TABLA . ' WHERE id_usrCreador = :id_usrCreador');
         $consulta->bindParam(':id_usrCreador', $idn);
+        $consulta->execute();
+        $registros = $consulta->fetchAll();
+        return $registros;
+    }
+
+
+    public static function obtenerPorIdEncargado($idn){
+        $conexion = new Conexion();
+        $consulta = $conexion->prepare('SELECT id,SO,
+                                                asunto,
+                                                detalle,
+                                                estado,
+                                                id_usrEncargado,
+                                                estadoDetalle,
+                                                prioridad,
+                                                id_usrCreador
+                                                FROM ' . self::TABLA . ' WHERE id_usrEncargado = :id_usrEncargado');
+        $consulta->bindParam(':id_usrEncargado', $idn);
         $consulta->execute();
         $registros = $consulta->fetchAll();
         return $registros;
@@ -166,7 +185,15 @@ class Tickets{
 
     public static function obtenerTodos(){
         $conexion = new Conexion();
-        $consulta = $conexion->prepare('SELECT * FROM ' . self::TABLA );
+        $consulta = $conexion->prepare('SELECT id,SO,
+                                                asunto,
+                                                detalle,
+                                                estado,
+                                                id_usrEncargado,
+                                                estadoDetalle,
+                                                prioridad,
+                                                id_usrCreador
+                                                FROM ' . self::TABLA );
         $consulta->execute();
         $registros = $consulta->fetchAll();
         return $registros;
